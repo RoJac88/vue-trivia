@@ -56,7 +56,7 @@ import TriviaCard from '@/components/TriviaCard.vue'
 import { QCard } from '@/types'
 import { pullQuestions } from '@/services'
 
-let cards: Array<QCard>
+let cards: QCard[]
 
 export default Vue.extend({
 
@@ -90,21 +90,25 @@ export default Vue.extend({
   },
 
   methods: {
-    addScore () {
+    addScore (): void {
       this.isPulsing = true
       this.score++
     },
-    nextCard () {
+    nextCard (): void {
       this.currentCard++
     },
-    stopPulsing () {
+    stopPulsing (): void {
       this.isPulsing = false
     },
     async loadQuestions () {
       this.loading = true
       this.clicked = true
-      const cards = await pullQuestions()
-      this.cards = cards
+      let questions = await pullQuestions()
+      if (questions) {
+        // Why do I need this ts-ignore? If you know how to fix this tell me on github
+        // @ts-ignore
+        this.cards = questions
+      }
       this.loading = false
     },
     async replayGame () {
@@ -113,8 +117,12 @@ export default Vue.extend({
       this.isPulsing = false
       this.score = 0
       this.currentCard = 1
-      const cards = await pullQuestions()
-      this.cards = cards
+      let questions = await pullQuestions()
+      if (questions) {
+        // Why do I need this ts-ignore? If you know how to fix this tell me on github
+        // @ts-ignore
+        this.cards = questions
+      }
       this.loading = false
     }
   }

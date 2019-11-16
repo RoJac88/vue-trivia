@@ -28,7 +28,7 @@ function shuffle (array: any[]) {
   return array
 }
 
-async function pullQuestions () {
+async function pullQuestions (): Promise<QCard[]> {
   let count = 0
   let questions: Array<QCard> = []
   let data = await axios.get(API)
